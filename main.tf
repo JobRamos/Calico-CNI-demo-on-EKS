@@ -45,6 +45,6 @@ resource "null_resource" "calicoctl_apply" {
 resource "null_resource" "kubectl_run" {
   depends_on = [null_resource.calicoctl_apply]
   provisioner "local-exec" {
-    command = "kubectl run apiserver --image=nginx --labels="color=red" --expose --port=80"
+    command = "kubectl run apiserver --image=nginx --labels=\"color=red\" --expose --port=80"
   }
 }

@@ -28,3 +28,5 @@ spec:
 
 # kubectl run test-$RANDOM --rm -i -t --image=alpine -- sh
 # kubectl run test-$RANDOM --rm -i -t --image=alpine --labels="color=blue" -- sh
+
+# wget -qO- --timeout=2 http://apiserver
