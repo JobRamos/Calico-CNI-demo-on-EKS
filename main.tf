@@ -35,12 +35,16 @@ resource "null_resource" "eksctl_nodegroup" {
   }
 }
 
-resource "null_resource" "kubectl_netpol_1" {
+resource "null_resource" "calicoctl_apply" {
   depends_on = [null_resource.eksctl_nodegroup]
   provisioner "local-exec" {
-    command = "eksctl create nodegroup --cluster my-calico-cluster --node-type t3.medium --max-pods-per-node 100"
+    command = "calicoctl apply -f ${path.module}/api-allow.yaml"
   }
 }
 
-# kubectl create deployment nginx-deployment --image=nginx --replicas=30
-# calicoctl ipam show
+resource "null_resource" "kubectl_run" {
+  depends_on = [null_resource.calicoctl_apply]
+  provisioner "local-exec" {
+    command = "kubectl run apiserver --image=nginx --labels="color=red" --expose --port=80"
+  }
+}

@@ -1,15 +1,30 @@
+### Example network policies
+# https://github.com/ahmetb/kubernetes-network-policy-recipes/blob/master/02-limit-traffic-to-an-application.md
+# https://docs.tigera.io/calico/latest/network-policy/get-started/calico-policy/calico-network-policy
+
 apiVersion: projectcalico.org/v3
 kind: NetworkPolicy
 metadata:
   name: allow-tcp-6379
-  namespace: production
+  # namespace: production
 spec:
-  selector: color == red
+  selector: color == 'red'
   ingress:
     - action: Allow
       protocol: TCP
       source:
-        selector: color == blue
+        selector: color == 'blue'
       destination:
         ports:
-          - 6379
+          - 80
+
+
+# kubectl create deployment nginx-deployment --image=nginx --replicas=30
+
+# calicoctl ipam show
+# calicoctl apply -f api-allow.yaml
+
+# kubectl run apiserver --image=nginx --labels="color=red" --expose --port=80
+
+# kubectl run test-$RANDOM --rm -i -t --image=alpine -- sh
+# kubectl run test-$RANDOM --rm -i -t --image=alpine --labels="color=blue" -- sh
